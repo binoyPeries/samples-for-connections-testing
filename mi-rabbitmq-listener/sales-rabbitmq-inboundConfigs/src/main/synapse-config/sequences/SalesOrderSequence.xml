@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence name="SalesOrderSequence" trace="disable" xmlns="http://ws.apache.org/ns/synapse">
+    <log description="Log sales order payload" level="full"/>
+
+    <!-- Getting env variables -->
+    <property expression="get-property('env', 'TOKEN_URL')" name="uri.var.token_url"
+              scope="default" type="STRING" />
+    <property expression="get-property('env', 'CONSUMER_KEY')" name="consumer_key"
+              scope="default" type="STRING" />
+    <property expression="get-property('env', 'CONSUMER_SECRET')"
+              name="consumer_secret"
+              scope="default" type="STRING" />
+    <property expression="get-property('env', 'SVC_URL')" name="uri.var.service_url"
+              scope="default" type="STRING" />
+
+    <property expression="fn:concat($ctx:consumer_key, ':', $ctx:consumer_secret)" name="credentials" scope="default" type="STRING" />
+    <!-- Encode concatenated string using base64 -->
+    <property expression="base64Encode(get-property('credentials'))" name="app-client-auth" scope="default" type="STRING" />
+
+
+    <log level="custom">
+        <property expression="$ctx:token_url" name="Token URL"/>
+        <property expression="$ctx:consumer_key" name="Consumer Key"/>
+        <property expression="$ctx:consumer_secret" name="Consumer Secret"/>
+        <property expression="$ctx:service_url" name="Service URL"/>
+        <property expression="$ctx:app-client-auth" name="Base64 encoded client cred"/>
+    </log>
+
+
+    <payloadFactory media-type="xml">
+        <format>
+            <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+                <soapenv:Body>
+                    <root xmlns="">
+                        <grant_type>client_credentials</grant_type>
+                    </root>
+                </soapenv:Body>
+            </soapenv:Envelope>
+        </format>
+        <args />
+    </payloadFactory>
+
+    <header expression="fn:concat('Basic ', get-property('app-client-auth'))" name="Authorization" scope="transport" />
+    <header name="Content-Type" scope="transport" value="application/x-www-form-urlencoded" />
+    <property description="messageType" name="messageType" scope="axis2" type="STRING" value="application/x-www-form-urlencoded" />
+    <call blocking="true">
+        <endpoint name="token">
+            <http method="post" uri-template="{uri.var.token_url}" />
+        </endpoint>
+    </call>
+
+    <property description="generated_token" expression="json-eval($.access_token)" name="generated-access-token" scope="default" type="STRING" />
+    <header expression="fn:concat('Bearer ', get-property('generated-access-token'))" name="Authorization" scope="transport" />
+    <!-- Making GET request to svc_url -->
+    <call blocking="true">
+        <endpoint name="service">
+            <http method="get" uri-template="{uri.var.service_url}" />
+        </endpoint>
+    </call>
+
+    <property expression="json-eval($)" name="response-body" />
+
+    <!-- Logging only the response body -->
+    <log level="custom">
+        <property expression="$ctx:response-body" name="Resposne Body"/>
+    </log>
+
+</sequence>

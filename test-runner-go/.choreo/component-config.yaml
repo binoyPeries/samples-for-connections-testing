@@ -1,0 +1,16 @@
+apiVersion: core.choreo.dev/v1beta1
+kind: ComponentConfig
+spec:
+  outbound:
+    serviceReferences:
+    - name: choreo:///apifirst/connections/ktwgzp/8b1c3/v1.0/PUBLIC
+      connectionConfig: 01ef023d-0ad8-18f8-b520-e8765d83746e
+      env:
+      - from: ServiceURL
+        to: SVC_URL
+      - from: ConsumerKey
+        to: CONSUMER_KEY
+      - from: ConsumerSecret
+        to: CONSUMER_SECRET
+      - from: TokenURL
+        to: TOKEN_URL

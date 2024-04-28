@@ -1,0 +1,4 @@
+pika
+requests
+oauthlib
+requests_oauthlib

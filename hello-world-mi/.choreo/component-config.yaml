@@ -1,0 +1,23 @@
+apiVersion: core.choreo.dev/v1beta1
+kind: ComponentConfig
+spec:
+  inbound:
+    - name: MI Hello world
+      port: 8290
+      type: REST
+      networkVisibility: Public
+      context: /
+      schemaFilePath: helloConfigs/src/main/resources/metadata/HelloWorld_swagger.yaml
+  outbound:
+    serviceReferences:
+    - name: choreo:///apifirst/connections/ktwgzp/8b1c3/v1.0/PUBLIC
+      connectionConfig: 01ef023e-2d1e-1dd0-9f87-8dd16039f9b2
+      env:
+      - from: ServiceURL
+        to: SVC_URL
+      - from: ConsumerKey
+        to: CONSUMER_KEY
+      - from: ConsumerSecret
+        to: CONSUMER_SECRET
+      - from: TokenURL
+        to: TOKEN_URL
