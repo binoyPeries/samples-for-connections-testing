@@ -3,8 +3,8 @@ kind: ComponentConfig
 spec:
   outbound:
     serviceReferences:
-    - name: choreo:///apifirst/connections/ktwgzp/8b1c3/v1.0/PUBLIC
-      connectionConfig: 01ef022c-0d7e-1b96-8ba8-3e06a77f9f5b
+    - name: choreo:///apifirst/qmdp/test-connection-publisher/8b1c3/v1/PUBLIC
+      connectionConfig: 01ef6432-ff87-1b1e-a3d2-d05255052125
       env:
       - from: ServiceURL
         to: SVC_URL
@@ -14,4 +14,5 @@ spec:
         to: CONSUMER_SECRET
       - from: TokenURL
         to: TOKEN_URL
+
 
