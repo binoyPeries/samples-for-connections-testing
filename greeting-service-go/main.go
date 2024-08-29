@@ -67,36 +67,11 @@ func main() {
 
 func greet(w http.ResponseWriter, r *http.Request) {
 	
-	serviceURL := os.Getenv("SVC_URL")
-	tokenUrl := os.Getenv("TOKEN_URL")
-	clientSecret := os.Getenv("CONSUMER_SECRET")
-	clientId := os.Getenv("CONSUMER_KEY")
-	
-	var clientCredsConfig = clientcredentials.Config{
-		ClientID:     clientId,
-		ClientSecret: clientSecret,
-		TokenURL:     tokenUrl,
+	name := r.URL.Query().Get("name")
+	if name == "" {
+		name = "World" // Default to "World" if no name is provided
 	}
-
-	client := clientCredsConfig.Client(context.Background())
-	response, err := "Hi Hansi"
-	if err != nil {
-		http.Error(w, fmt.Sprintf("Error making request: %v", err), http.StatusInternalServerError)
-		return
-	}
-	defer response.Body.Close()
-
-	// Check the response status code
-	if response.StatusCode != http.StatusOK {
-		http.Error(w, fmt.Sprintf("Server returned non-200 status: %d %s", response.StatusCode, response.Status), response.StatusCode)
-		return
-	}
-
-	// Copy the response body directly to the client
-	_, err = io.Copy(w, response.Body)
-	if err != nil {
-		// If there's an error writing the response body to the client, log it
-		log.Printf("Error writing response body to client: %v\n", err)
-	}
+	// Respond with a greeting
+	fmt.Fprintf(w, "Hello, %s!", name)
 }
 
