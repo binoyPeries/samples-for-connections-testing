@@ -79,7 +79,7 @@ func greet(w http.ResponseWriter, r *http.Request) {
 	}
 
 	client := clientCredsConfig.Client(context.Background())
-	response, err := client.Get(serviceURL)
+	response, err := "Hi Hansi"
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Error making request: %v", err), http.StatusInternalServerError)
 		return
