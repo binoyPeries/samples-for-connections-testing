@@ -8,17 +8,4 @@ spec:
       networkVisibility: Public
       context: /
       schemaFilePath: openapi.yaml
-  outbound:
-    serviceReferences:
-    - name: choreo:///apifirst/qmdp/test-connection-publisher/8b1c3/v1/PUBLIC
-      connectionConfig: 01ef6432-ff87-1b1e-a3d2-d05255052125
-      env:
-      - from: ServiceURL
-        to: SVC_URL
-      - from: ConsumerKey
-        to: CONSUMER_KEY
-      - from: ConsumerSecret
-        to: CONSUMER_SECRET
-      - from: TokenURL
-        to: TOKEN_URL
 
