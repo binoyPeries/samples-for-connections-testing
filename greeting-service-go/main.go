@@ -67,11 +67,20 @@ func main() {
 
 func greet(w http.ResponseWriter, r *http.Request) {
 	
-	name := r.URL.Query().Get("name")
-	if name == "" {
-		name = "World" // Default to "World" if no name is provided
-	}
-	// Respond with a greeting
-	fmt.Fprintf(w, "Hello, %s!", name)
+		// Read environment variables
+	hostname := os.Getenv("HOSTNAME")
+	username := os.Getenv("USERNAME")
+	password := os.Getenv("PASSWORD")
+	port := os.Getenv("PORT")
+	database := os.Getenv("DATABASE")
+
+	// Construct a response string with the environment variables
+	response := fmt.Sprintf(
+		"HOSTNAME: %s\nUSERNAME: %s\nPASSWORD: %s\nPORT: %s\nDATABASE: %s\n",
+		hostname, username, password, port, database,
+	)
+
+	// Respond with the environment variable values
+	fmt.Fprint(w, response)
 }
 
