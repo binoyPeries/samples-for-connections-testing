@@ -8,4 +8,20 @@ spec:
       networkVisibility: Public
       context: /
       schemaFilePath: openapi.yaml
+  outbound:
+    serviceReferences:
+    - name: database:testhrdb
+      connectionConfig: 01ef6eaf-5bc8-1e7e-a206-03484a9f3058
+      env: 
+      - from: HostName
+        to: HOST_NAME
+      - from: Port
+        to: PORT
+      - from: Username
+        to: USERNAME
+      - from: Password
+        to: PASSWORD
+      - from: DatabaseName
+        to: DATABASE
+
 
