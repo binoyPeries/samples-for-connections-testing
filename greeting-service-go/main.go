@@ -22,15 +22,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"io"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
-
-	"golang.org/x/oauth2/clientcredentials"
 )
 
 func main() {
