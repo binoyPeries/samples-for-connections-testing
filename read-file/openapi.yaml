@@ -1,0 +1,22 @@
+openapi: 3.0.0
+info:
+  title: File API
+  version: 1.0.0
+paths:
+  /file:
+    get:
+      summary: Retrieve file content
+      description: Returns the content of the file specified by the FILE_PATH environment variable.
+      responses:
+        '200':
+          description: Successful response with file content
+          content:
+            text/plain:
+              schema:
+                type: string
+        '500':
+          description: Internal server error
+          content:
+            text/plain:
+              schema:
+                type: string
