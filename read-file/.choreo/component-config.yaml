@@ -11,7 +11,7 @@ spec:
   outbound:
     serviceReferences:
     - name: database:neew2
-      connectionConfig: 01ef7f1e-b5f1-121e-8b12-b7ec04aa2ac6
+      connectionConfig: 01ef7f1b-5645-1476-8247-1eec5fd8b4be
       env: 
       - from: HostName
         to: <YOUR_ENV_VARIABLE_NAME_HERE>
