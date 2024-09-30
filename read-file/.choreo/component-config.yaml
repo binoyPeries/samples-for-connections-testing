@@ -8,5 +8,18 @@ spec:
       networkVisibility: Public
       context: /
       schemaFilePath: openapi.yaml
-
-
+  outbound:
+    serviceReferences:
+    - name: database:neew2
+      connectionConfig: 01ef7f1e-b5f1-121e-8b12-b7ec04aa2ac6
+      env: 
+      - from: HostName
+        to: <YOUR_ENV_VARIABLE_NAME_HERE>
+      - from: Port
+        to: <YOUR_ENV_VARIABLE_NAME_HERE>
+      - from: Username
+        to: <YOUR_ENV_VARIABLE_NAME_HERE>
+      - from: Password
+        to: <YOUR_ENV_VARIABLE_NAME_HERE>
+      - from: DatabaseName
+        to: <YOUR_ENV_VARIABLE_NAME_HERE>
