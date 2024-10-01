@@ -23,5 +23,5 @@ spec:
         to: <YOUR_ENV_VARIABLE_NAME_HERE>
       - from: DatabaseName
         to: <YOUR_ENV_VARIABLE_NAME_HERE>
-      - from: exampletest.txt
-        to: exampletest.txt
+      - from: exampletest
+        to: exampletest
