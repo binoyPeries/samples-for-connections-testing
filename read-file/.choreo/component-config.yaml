@@ -24,4 +24,4 @@ spec:
       - from: DatabaseName
         to: E
       - from: exampletest.txt
-        to: exampletest1.txt
+        to: exampletestnew.txt
