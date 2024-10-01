@@ -23,3 +23,5 @@ spec:
         to: <YOUR_ENV_VARIABLE_NAME_HERE>
       - from: DatabaseName
         to: <YOUR_ENV_VARIABLE_NAME_HERE>
+      - from: /example.txt
+        to: /example.txt
