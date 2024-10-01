@@ -14,14 +14,14 @@ spec:
       connectionConfig: 01ef7f1b-5645-1476-8247-1eec5fd8b4be
       env: 
       - from: HostName
-        to: <YOUR_ENV_VARIABLE_NAME_HERE>
+        to: A
       - from: Port
-        to: <YOUR_ENV_VARIABLE_NAME_HERE>
+        to: B
       - from: Username
-        to: <YOUR_ENV_VARIABLE_NAME_HERE>
+        to: C
       - from: Password
-        to: <YOUR_ENV_VARIABLE_NAME_HERE>
+        to: D
       - from: DatabaseName
-        to: <YOUR_ENV_VARIABLE_NAME_HERE>
-      - from: exampletest
-        to: exampletest
+        to: E
+      - from: exampletest.txt
+        to: exampletest.txt
