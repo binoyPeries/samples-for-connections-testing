@@ -8,5 +8,18 @@ spec:
       networkVisibility: Public
       context: /
       schemaFilePath: openapi.yaml
+  outbound:
+    serviceReferences:
+    - name: choreo:///apifirst/connections/ktwgzp/8b1c3/v1.0/PUBLIC
+      connectionConfig: 01ef021d-19af-14a6-bbb3-53d6971078f0
+      env:
+      - from: ServiceURL
+        to: SVC_URL
+      - from: ConsumerKey
+        to: CONSUMER_KEY
+      - from: ConsumerSecret
+        to: CONSUMER_SECRET
+      - from: TokenURL
+        to: TOKEN_URL
 
 
