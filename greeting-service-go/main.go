@@ -65,16 +65,15 @@ func main() {
 func greet(w http.ResponseWriter, r *http.Request) {
 	
 		// Read environment variables
-	hostname := os.Getenv("HOSTNAME")
-	username := os.Getenv("USERNAME")
-	password := os.Getenv("PASSWORD")
-	port := os.Getenv("PORT")
-	database := os.Getenv("DATABASE")
+	serviceURL := os.Getenv("SVC_URL")
+	tokenUrl := os.Getenv("TOKEN_URL")
+	clientSecret := os.Getenv("CONSUMER_SECRET")
+	clientId := os.Getenv("CONSUMER_KEY")
 
 	// Construct a response string with the environment variables
 	response := fmt.Sprintf(
-		"HOSTNAME: %s\nUSERNAME: %s\nPASSWORD: %s\nPORT: %s\nDATABASE: %s\n",
-		hostname, username, password, port, database,
+		"SVC_URL: %s\TOKEN_URL: %s\CONSUMER_SECRET: %s\CONSUMER_KEY: %s\n",
+		serviceURL, tokenUrl, clientSecret, clientId,
 	)
 
 	// Respond with the environment variable values
