@@ -6,7 +6,7 @@ spec:
       port: 9090
       type: REST
       networkVisibility: Public
-      context: /
+      context: /greeter/greet
       schemaFilePath: openapi.yaml
   outbound:
     serviceReferences:
