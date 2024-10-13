@@ -34,7 +34,8 @@ import (
 )
 
 func main() {
-
+	serviceURL1 := os.Getenv("SVC_URL")
+	fmt.printf(serviceURL1)
 	serverMux := http.NewServeMux()
 	serverMux.HandleFunc("/greeter/greet", greet)
 
