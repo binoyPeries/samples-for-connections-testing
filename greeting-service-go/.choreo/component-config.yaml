@@ -8,5 +8,18 @@ spec:
       networkVisibility: Public
       context: /
       schemaFilePath: openapi.yaml
+  outbound:
+    serviceReferences:
+    - name: choreo:///hansijk/databaseconnectionsdemo/testdependentservicenew2/40cc6/v1/PUBLIC
+      connectionConfig: 01ef8932-1545-12de-a7a4-f0aeb134cec2
+      env:
+      - from: ServiceURL
+        to: SVC_URL
+      - from: ConsumerKey
+        to: CONSUMER_KEY
+      - from: ConsumerSecret
+        to: CONSUMER_SECRET
+      - from: TokenURL
+        to: TOKEN_URL
 
 
