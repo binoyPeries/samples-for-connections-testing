@@ -10,8 +10,8 @@ spec:
       schemaFilePath: openapi.yaml
   outbound:
     serviceReferences:
-    - name: choreo:///hansijk/databaseconnectionsdemo/testdependentservicego/40cc6/v1/PUBLIC
-      connectionConfig: 01ef892e-415e-1afe-9540-7b0b999d23e3
+    - name: choreo:///hansijk/databaseconnectionsdemo/testdependentservicenew2/40cc6/v1/PUBLIC
+      connectionConfig: 01ef892f-cbf3-1dee-bf72-81c3ec7e4362
       env:
       - from: ServiceURL
         to: SVC_URL
