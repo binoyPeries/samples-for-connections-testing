@@ -66,35 +66,26 @@ func main() {
 }
 
 func greet(w http.ResponseWriter, r *http.Request) {
-	serviceURL := os.Getenv("SVC_URL") + "/greeting"
-	tokenUrl := os.Getenv("TOKEN_URL")
+	// Read environment variables
+	serviceURL := os.Getenv("SVC_URL")
+	tokenURL := os.Getenv("TOKEN_URL")
 	clientSecret := os.Getenv("CONSUMER_SECRET")
-	clientId := os.Getenv("CONSUMER_KEY")
-	fmt.Printf(clientId)
-	var clientCredsConfig = clientcredentials.Config{
-		ClientID:     clientId,
-		ClientSecret: clientSecret,
-		TokenURL:     tokenUrl,
+	clientID := os.Getenv("CONSUMER_KEY")
+	
+	// Log the client ID for debugging
+	fmt.Printf("Client ID: %s\n", clientID)
+	
+	// Prepare a JSON response with the environment variables
+	envVars := map[string]string{
+		"SVC_URL":         serviceURL,
+		"TOKEN_URL":       tokenURL,
+		"CONSUMER_SECRET": clientSecret,
+		"CONSUMER_KEY":    clientID,
 	}
 
-	client := clientCredsConfig.Client(context.Background())
-	response, err := client.Get(serviceURL)
-	if err != nil {
-		http.Error(w, fmt.Sprintf("Error making request: %v", err), http.StatusInternalServerError)
-		return
-	}
-	defer response.Body.Close()
-
-	// Check the response status code
-	if response.StatusCode != http.StatusOK {
-		http.Error(w, fmt.Sprintf("Server returned non-200 status: %d %s", response.StatusCode, response.Status), response.StatusCode)
-		return
-	}
-
-	// Copy the response body directly to the client
-	_, err = io.Copy(w, response.Body)
-	if err != nil {
-		// If there's an error writing the response body to the client, log it
-		log.Printf("Error writing response body to client: %v\n", err)
+	// Set the content type to JSON and write the response
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(envVars); err != nil {
+		http.Error(w, fmt.Sprintf("Failed to encode response: %v", err), http.StatusInternalServerError)
 	}
 }
