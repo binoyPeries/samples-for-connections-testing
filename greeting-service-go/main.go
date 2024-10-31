@@ -34,8 +34,7 @@ import (
 )
 
 func main() {
-	serviceURL1 := os.Getenv("SVC_URL")
-	fmt.Printf(serviceURL1)
+
 	serverMux := http.NewServeMux()
 	serverMux.HandleFunc("/greeter/greet", greet)
 
@@ -72,7 +71,7 @@ func greet(w http.ResponseWriter, r *http.Request) {
 	tokenUrl := os.Getenv("TOKEN_URL")
 	clientSecret := os.Getenv("CONSUMER_SECRET")
 	clientId := os.Getenv("CONSUMER_KEY")
-	
+	fmt.printf(clientId)
 	var clientCredsConfig = clientcredentials.Config{
 		ClientID:     clientId,
 		ClientSecret: clientSecret,
