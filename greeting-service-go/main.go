@@ -29,8 +29,7 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
-
-	"golang.org/x/oauth2/clientcredentials"
+	"encoding/json"
 )
 
 func main() {
