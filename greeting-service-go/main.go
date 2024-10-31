@@ -70,7 +70,7 @@ func greet(w http.ResponseWriter, r *http.Request) {
 	tokenUrl := os.Getenv("TOKEN_URL")
 	clientSecret := os.Getenv("CONSUMER_SECRET")
 	clientId := os.Getenv("CONSUMER_KEY")
-	fmt.printf(clientId)
+	fmt.Printf(clientId)
 	var clientCredsConfig = clientcredentials.Config{
 		ClientID:     clientId,
 		ClientSecret: clientSecret,
