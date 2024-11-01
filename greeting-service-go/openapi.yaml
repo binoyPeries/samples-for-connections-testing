@@ -25,3 +25,25 @@ paths:
                 type: string
       deprecated: false
       security: []
+  /greeter/greetresp:
+  get:
+    summary: Greet a person 2
+    description: Greet a person by name
+    tags:
+      - greeting
+    parameters:
+      - name: name
+        in: query
+        description: Name of the person to greet
+        required: false
+        schema:
+          type: string
+    responses:
+      '200':
+        description: Successful response
+        content:
+          text/plain:
+            schema:
+              type: string
+    deprecated: false
+    security: []
