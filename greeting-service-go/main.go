@@ -91,9 +91,9 @@ func greet(w http.ResponseWriter, r *http.Request) {
 	// }
 	
 	var clientCredsConfig = clientcredentials.Config{
-		ClientID:     clientId,
+		ClientID:     clientID,
 		ClientSecret: clientSecret,
-		TokenURL:     tokenUrl,
+		TokenURL:     tokenURL,
 	}
 
 	client := clientCredsConfig.Client(context.Background())
