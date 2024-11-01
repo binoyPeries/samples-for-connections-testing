@@ -28,7 +28,6 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
-	"encoding/json"
         "io"
         "golang.org/x/oauth2/clientcredentials"
 )
@@ -75,28 +74,22 @@ func greet(w http.ResponseWriter, r *http.Request) {
 	
 	// Log the client ID for debugging
 	fmt.Printf("Client ID: %s\n", clientID)
+	fmt.Printf("serviceURL: %s\n", serviceURL)
+
+	// // Prepare a JSON response with the environment variables
+	// envVars := map[string]string{
+	// 	"SVC_URL":         serviceURL,
+	// 	"TOKEN_URL":       tokenURL,
+	// 	"CONSUMER_SECRET": clientSecret,
+	// 	"CONSUMER_KEY":    clientID,
+	// }
+
+	// // Set the content type to JSON and write the response
+	// w.Header().Set("Content-Type", "application/json")
+	// if err := json.NewEncoder(w).Encode(envVars); err != nil {
+	// 	http.Error(w, fmt.Sprintf("Failed to encode response: %v", err), http.StatusInternalServerError)
+	// }
 	
-	// Prepare a JSON response with the environment variables
-	envVars := map[string]string{
-		"SVC_URL":         serviceURL,
-		"TOKEN_URL":       tokenURL,
-		"CONSUMER_SECRET": clientSecret,
-		"CONSUMER_KEY":    clientID,
-	}
-
-	// Set the content type to JSON and write the response
-	w.Header().Set("Content-Type", "application/json")
-	if err := json.NewEncoder(w).Encode(envVars); err != nil {
-		http.Error(w, fmt.Sprintf("Failed to encode response: %v", err), http.StatusInternalServerError)
-	}
-}
-
-func greetResp(w http.ResponseWriter, r *http.Request) {
-	serviceURL := os.Getenv("SVC_URL") + "/greeting"
-	tokenUrl := os.Getenv("TOKEN_URL")
-	clientSecret := os.Getenv("CONSUMER_SECRET")
-	clientId := os.Getenv("CONSUMER_KEY")
-	fmt.Printf(clientId)
 	var clientCredsConfig = clientcredentials.Config{
 		ClientID:     clientId,
 		ClientSecret: clientSecret,
@@ -122,3 +115,4 @@ func greetResp(w http.ResponseWriter, r *http.Request) {
 		log.Printf("Error writing response body to client: %v\n", err)
 	}
 }
+
