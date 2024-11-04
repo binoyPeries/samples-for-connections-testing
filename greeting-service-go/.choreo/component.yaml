@@ -30,15 +30,6 @@ endpoints:
     schemaFilePath: openapi.yaml
 
 dependencies:
-    serviceReferences:
-    - name: choreo:///apifirst/testcomponentyaml/go-public-2/803f0/v1/PUBLIC
-      connectionConfig: 01ef9a63-3a29-14e0-a814-0c370899f36d
-      env:
-      - from: ServiceURL
-        to: SVC_URL
-      - from: ConsumerKey
-        to: CONSUMER_KEY
-      - from: ConsumerSecret
-        to: CONSUMER_SECRET
-      - from: TokenURL
-        to: TOKEN_URL
+    connectionReferences:
+    - name: TestNew1
+      resourceRef: service:/testcomponentyaml/go-public-2/v1/803f0/PUBLIC
