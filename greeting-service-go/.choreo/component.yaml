@@ -30,5 +30,5 @@ endpoints:
     schemaFilePath: openapi.yaml
 dependencies:
     connectionReferences:
-    - name: TestNew2
-      resourceRef: service:/testcomponentyaml/go-public-1/v1/803f0/PUBLIC
+    - name: noauthPublisher
+      resourceRef: service:/howtousetest/noauth/v1/8b1c3/PUBLIC
