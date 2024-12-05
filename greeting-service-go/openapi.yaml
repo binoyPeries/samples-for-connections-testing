@@ -24,4 +24,11 @@ paths:
               schema:
                 type: string
       deprecated: false
-      security: []
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+security:
+  - ApiKeyAuth: []
