@@ -28,7 +28,3 @@ endpoints:
     # This is only applicable to REST endpoint types.
     # The path should be relative to the docker context.
     schemaFilePath: openapi.yaml
-dependencies:
-    connectionReferences:
-    - name: noauthPublisher
-      resourceRef: service:/howtousetest/noauth/v1/8b1c3/PUBLIC
