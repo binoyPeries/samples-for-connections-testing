@@ -21,7 +21,6 @@ package main
 import (
 	"context"
 	"errors"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -29,7 +28,6 @@ import (
 	"syscall"
 	"time"
         "io"
-        "golang.org/x/oauth2/clientcredentials"
 )
 
 func main() {
