@@ -1,103 +1,27 @@
-openapi: 3.0.0
+openapi: "3.0.0"
 info:
-  title: Azure Data Explorer Query API
+  title: Greeting Service
   version: 1.0.0
-  description: API for performing analytics on API data
-
-servers:
-  - url: /
-    description: Base endpoint
-
 paths:
-  /health:
+  /greeter/greet:
     get:
-      summary: Health check endpoint
-      operationId: healthCheck
+      summary: Greet a person
+      description: Greet a person by name
+      tags:
+        - greeting
+      parameters:
+        - name: name
+          in: query
+          description: Name of the person to greet
+          required: false
+          schema:
+            type: string
       responses:
         '200':
-          description: Application is healthy
+          description: Successful response
           content:
-            application/json:
+            text/plain:
               schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: "healthy"
-                  message:
-                    type: string
-                    example: "Application is running"
-        '500':
-          description: Internal server error
-  /chat:
-    post:
-      summary: Process chat query and return analysis
-      operationId: processChat
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ChatRequest'
-      responses:
-        '200':
-          description: Successfully processed chat query
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  response:
-                    type: string
-                    description: The analysis response in markdown format
-                  chart:
-                    type: object
-                    nullable: true
-                    description: Optional chart data for visualization
-        '500':
-          description: Internal server error
-
-  /tools:
-    post:
-      summary: Select appropriate tools based on user query
-      operationId: selectTools
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ToolRequest'
-      responses:
-        '200':
-          description: Successfully selected tools
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  selected_tools:
-                    type: array
-                    items:
-                      type: string
-        '500':
-          description: Internal server error
-
-components:
-  schemas:
-    ChatRequest:
-      type: object
-      properties:
-        user_query:
-          type: string
-          description: The user's natural language query for chat analysis
-      required:
-        - user_query
-
-    ToolRequest:
-      type: object
-      properties:
-        user_query:
-          type: string
-          description: The user's natural language query
-      required:
-        - user_query
+                type: string
+      deprecated: false
+      security: []
