@@ -1,65 +1,58 @@
+/*
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com/) All Rights Reserved.
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 package main
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
-	"fmt"
+        "io"
+        "golang.org/x/oauth2/clientcredentials"
 )
 
-type HealthResponse struct {
-	Status  string `json:"status"`
-	Message string `json:"message"`
-}
-
-type ChatRequest struct {
-	UserQuery string `json:"user_query"`
-}
-
-type ChatResponse struct {
-	Response string      `json:"response"`
-	Chart    interface{} `json:"chart,omitempty"`
-}
-
-type ToolRequest struct {
-	UserQuery string `json:"user_query"`
-}
-
-type ToolResponse struct {
-	SelectedTools []string `json:"selected_tools"`
-}
-
 func main() {
-	serverMux := http.NewServeMux()
 
-	serverMux.HandleFunc("/health", healthCheckHandler)
-	serverMux.HandleFunc("/chat", chatHandler)
-	serverMux.HandleFunc("/tools", toolsHandler)
+	serverMux := http.NewServeMux()
+	serverMux.HandleFunc("/greeter/greet", greet)
 
 	serverPort := 9090
 	server := http.Server{
 		Addr:    fmt.Sprintf(":%d", serverPort),
 		Handler: serverMux,
 	}
-
 	go func() {
-		log.Printf("Starting server on port %d\n", serverPort)
+		log.Printf("Starting HTTP Greeter on port %d\n", serverPort)
 		if err := server.ListenAndServe(); !errors.Is(err, http.ErrServerClosed) {
 			log.Fatalf("HTTP ListenAndServe error: %v", err)
 		}
-		log.Println("Server stopped serving new requests.")
+		log.Println("HTTP server stopped serving new requests.")
 	}()
 
-	// Graceful shutdown
 	stopCh := make(chan os.Signal, 1)
 	signal.Notify(stopCh, syscall.SIGINT, syscall.SIGTERM)
-	<-stopCh
+	<-stopCh // Wait for shutdown signal
 
 	shutdownCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -71,66 +64,53 @@ func main() {
 	log.Println("Shutdown complete.")
 }
 
-func healthCheckHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+func greet(w http.ResponseWriter, r *http.Request) {
+	// Read environment variables
+	serviceURL := os.Getenv("CHOREO_TEYSYD_SERVICEURL")+"/greeting"
+	tokenURL := os.Getenv("CHOREO_TEYSYD_TOKENURL")
+	clientSecret := os.Getenv("CHOREO_TEYSYD_CONSUMERSECRET")
+	clientID := os.Getenv("CHOREO_TEYSYD_CONSUMERKEY")
+	
+	// Log the client ID for debugging
+	fmt.Printf("Client ID: %s\n", clientID)
+	fmt.Printf("serviceURL: %s\n", serviceURL)
+
+	// // Prepare a JSON response with the environment variables
+	// envVars := map[string]string{
+	// 	"SVC_URL":         serviceURL,
+	// 	"TOKEN_URL":       tokenURL,
+	// 	"CONSUMER_SECRET": clientSecret,
+	// 	"CONSUMER_KEY":    clientID,
+	// }
+
+	// // Set the content type to JSON and write the response
+	// w.Header().Set("Content-Type", "application/json")
+	// if err := json.NewEncoder(w).Encode(envVars); err != nil {
+	// 	http.Error(w, fmt.Sprintf("Failed to encode response: %v", err), http.StatusInternalServerError)
+	// }
+	
+	var clientCredsConfig = clientcredentials.Config{
+		ClientID:     clientID,
+		ClientSecret: clientSecret,
+		TokenURL:     tokenURL,
+	}
+
+	client := clientCredsConfig.Client(context.Background())
+	response, err := client.Get(serviceURL)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Error making request: %v", err), http.StatusInternalServerError)
 		return
 	}
-
-	response := HealthResponse{
-		Status:  "healthy",
-		Message: "Application is running",
-	}
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	if err := json.NewEncoder(w).Encode(response); err != nil {
-		log.Printf("Error writing health response: %v", err)
-	}
-}
-
-func chatHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+	defer response.Body.Close()
+	// Check the response status code
+	if response.StatusCode != http.StatusOK {
+		http.Error(w, fmt.Sprintf("Server returned non-200 status: %d %s", response.StatusCode, response.Status), response.StatusCode)
 		return
 	}
-
-	var chatReq ChatRequest
-	if err := json.NewDecoder(r.Body).Decode(&chatReq); err != nil {
-		http.Error(w, "Invalid request payload", http.StatusBadRequest)
-		return
-	}
-
-	// Dummy response logic
-	chatResp := ChatResponse{
-		Response: fmt.Sprintf("Analysis of query: %s", chatReq.UserQuery),
-		Chart:    nil,
-	}
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	if err := json.NewEncoder(w).Encode(chatResp); err != nil {
-		log.Printf("Error writing chat response: %v", err)
-	}
-}
-
-func toolsHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
-
-	var toolReq ToolRequest
-	if err := json.NewDecoder(r.Body).Decode(&toolReq); err != nil {
-		http.Error(w, "Invalid request payload", http.StatusBadRequest)
-		return
-	}
-
-	// Dummy response logic
-	toolResp := ToolResponse{
-		SelectedTools: []string{"Tool1", "Tool2"},
-	}
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	if err := json.NewEncoder(w).Encode(toolResp); err != nil {
-		log.Printf("Error writing tools response: %v", err)
+	// Copy the response body directly to the client
+	_, err = io.Copy(w, response.Body)
+	if err != nil {
+		// If there's an error writing the response body to the client, log it
+		log.Printf("Error writing response body to client: %v\n", err)
 	}
 }
