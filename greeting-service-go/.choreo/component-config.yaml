@@ -10,8 +10,8 @@ spec:
       schemaFilePath: openapi.yaml
   outbound:
     serviceReferences:
-    - name: choreo:///apifirst/eyer/testpublisher/40cc6/v1/PUBLIC
-      connectionConfig: 01ef8934-a7e6-1cc6-8080-f34ff8afd855
+    - name: choreo:///hansijk/iasf/isdtvy/8b1c3/v1/PUBLIC
+      connectionConfig: 01efb6af-3b2b-14c6-84a7-90fa1ed47950
       env:
       - from: ServiceURL
         to: SVC_URL
