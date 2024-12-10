@@ -66,7 +66,7 @@ func main() {
 
 func greet(w http.ResponseWriter, r *http.Request) {
 	// Read environment variables
-	serviceURL := os.Getenv("SVC_URL")+"/greeting"
+	serviceURL := os.Getenv("SVC_URL")
 	tokenURL := os.Getenv("TOKEN_URL")
 	clientSecret := os.Getenv("CONSUMER_SECRET")
 	clientID := os.Getenv("CONSUMER_KEY")
