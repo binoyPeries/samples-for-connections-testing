@@ -1,0 +1,25 @@
+schemaVersion: "1.1"
+endpoints:
+    - name: go-greeter-803
+      displayName: Go Greeter
+      service:
+        basePath: /
+        port: 9090
+      type: REST
+      networkVisibilities:
+        - Project
+        - Public
+      schemaFilePath: openapi.yaml
+dependencies:
+    serviceReferences:
+        - name: choreo:///binoydev/uwqv/pub-greeter/8b1c3/v1/PUBLIC
+          connectionConfig: 01efb6b7-19ce-15e6-8012-58092629a275
+          env:
+            - from: ServiceURL
+              to: SVC_URL
+            - from: ConsumerKey
+              to: CONSUMER_KEY
+            - from: ConsumerSecret
+              to: CONSUMER_SECRET
+            - from: TokenURL
+              to: TOKEN_URL
