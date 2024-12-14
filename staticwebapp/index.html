@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Call Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>API Call Example</h1>
+    <button id="fetchData">Fetch Data</button>
+    <div id="result">Response will be displayed here...</div>
+
+    <script>
+        document.getElementById('fetchData').addEventListener('click', async () => {
+            const resultDiv = document.getElementById('result');
+            const apiUrl = 'https://jsonplaceholder.typicode.com/posts/1'; // Example API endpoint
+
+            try {
+                resultDiv.textContent = 'Loading...';
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                resultDiv.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                resultDiv.textContent = `Error: ${error.message}`;
+            }
+        });
+    </script>
+</body>
+</html>
