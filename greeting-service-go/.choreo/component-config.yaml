@@ -8,16 +8,3 @@ spec:
       networkVisibility: Public
       context: /
       schemaFilePath: openapi.yaml
-  outbound:
-    serviceReferences:
-    - name: choreo:///hansijk/iasf/publishercomponent1/8b1c3/v1/PUBLIC
-      connectionConfig: 01efb6b1-978f-16b0-8296-4c610d44659b
-      env:
-      - from: ServiceURL
-        to: SVC_URL
-      - from: ConsumerKey
-        to: CONSUMER_KEY
-      - from: ConsumerSecret
-        to: CONSUMER_SECRET
-      - from: TokenURL
-        to: TOKEN_URL
