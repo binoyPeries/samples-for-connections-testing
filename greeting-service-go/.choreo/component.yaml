@@ -10,7 +10,3 @@ endpoints:
         - Project
         - Public
       schemaFilePath: openapi.yaml
-dependencies:
-    connectionReferences:
-    - name: Publisher2Conn
-      resourceRef: service:/databaseconnectionsdemo/swagger-petstore-poxy1/v1/proxy/PUBLIC
