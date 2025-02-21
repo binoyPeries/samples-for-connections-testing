@@ -14,3 +14,5 @@ dependencies:
     connectionReferences:
     - name: testconnn
       resourceRef: service:/iasf/publishercomponent1-lx/v1/8b1c3/PUBLIC
+    - name: Publisher2Conn
+      resourceRef: service:/databaseconnectionsdemo/swagger-petstore-poxy1/v1/proxy/PUBLIC
