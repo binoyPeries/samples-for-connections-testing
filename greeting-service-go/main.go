@@ -36,6 +36,7 @@ func main() {
 
 	serverMux := http.NewServeMux()
 	serverMux.HandleFunc("/greeter/greet", greet)
+	http.HandleFunc("/greeter/env", getEnvVars)
 
 	serverPort := 9090
 	server := http.Server{
@@ -113,4 +114,37 @@ func greet(w http.ResponseWriter, r *http.Request) {
 		// If there's an error writing the response body to the client, log it
 		log.Printf("Error writing response body to client: %v\n", err)
 	}
+}
+
+// Returns all environment variables as a JSON response
+func getEnvVars(w http.ResponseWriter, r *http.Request) {
+	envVars := make(map[string]string)
+
+	// Retrieve all environment variables
+	for _, env := range os.Environ() {
+		pair := splitEnv(env)
+		envVars[pair[0]] = pair[1]
+	}
+
+	// Set response headers
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+
+	// Encode the environment variables as JSON and send the response
+	if err := json.NewEncoder(w).Encode(envVars); err != nil {
+		http.Error(w, fmt.Sprintf("Failed to encode response: %v", err), http.StatusInternalServerError)
+	}
+}
+
+// Helper function to split environment variables into key-value pairs
+func splitEnv(env string) [2]string {
+	var pair [2]string
+	for i, char := range env {
+		if char == '=' {
+			pair[0] = env[:i]
+			pair[1] = env[i+1:]
+			break
+		}
+	}
+	return pair
 }
