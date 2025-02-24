@@ -11,16 +11,6 @@ endpoints:
         - Public
       schemaFilePath: openapi.yaml
 dependencies:
-    serviceReferences:
-    - name: choreo:///hansijk/databaseconnectionsdemo/swagger-petstore-poxy1/proxy/v1/PUBLIC
-      connectionConfig: 01eff1c6-8b9e-14a6-82c4-cba096a399dd
-      env:
-      - from: ServiceURL
-        to: SVC_URL
-      - from: ConsumerKey
-        to: CONSUMER_KEY
-      - from: ConsumerSecret
-        to: CONSUMER_SECRET
-      - from: TokenURL
-        to: TOKEN_URL
-
+    connectionReferences:
+    - name: testConnPub
+      resourceRef: service:/iasf/publishercomponent1-lx/v1/8b1c3/PUBLIC
