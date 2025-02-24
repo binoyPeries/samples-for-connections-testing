@@ -10,18 +10,3 @@ endpoints:
         - Project
         - Public
       schemaFilePath: openapi.yaml
-dependencies:
-    serviceReferences:
-    - name: choreo:///hansijk/iasf/publishercomponent1-lx/8b1c3/v1/PUBLIC
-      connectionConfig: 01eff1b1-a3b7-19ee-83e5-1aff0c88c589
-      env:
-      - from: ServiceURL
-        to: PUB_SVCURL
-      - from: ConsumerKey
-        to: PUB_CONSUMEKRYE
-      - from: ConsumerSecret
-        to: PUB_SECRET
-      - from: TokenURL
-        to: PUB_TOKENURL
-      - from: ChoreoAPIKey
-        to: PUB_CHOREOLEY
