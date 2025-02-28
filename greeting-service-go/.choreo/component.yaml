@@ -12,7 +12,7 @@ endpoints:
     schemaFilePath: openapi.yaml
 dependencies:
   connectionReferences:
-    - name: travelcon
-      resourceRef: service:/release2025/travelbooking/v1/c95d2/PUBLIC
+    - name: procycon
+      resourceRef: service:/testprojecthansi/swagger-petstore-indextes/v1/proxy/PUBLIC
     - name: testconnpubnew
       resourceRef: service:/testprojecthansi/publishernew/v1/8b1c3/PUBLIC
