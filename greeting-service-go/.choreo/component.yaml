@@ -12,8 +12,8 @@ endpoints:
     schemaFilePath: openapi.yaml
 dependencies:
     connectionReferences:
-    - name: testConnBinoy
-      resourceRef: service:/iasf/consumertest1/v1/803f0/PUBLIC
+    - name: testBinoyConnn
+      resourceRef: service:/iasf/publishercomponent1-lx/v1/8b1c3/PUBLIC
 configuration:
     # +optional List of environment variables to be injected into the component.
     env:
@@ -25,6 +25,6 @@ configuration:
           # +required Choreo connection value source
           connectionRef:
             # +required Choreo connection name to refer the value from
-            name: testConnBinoy
+            name: testBinoyConnn
             # +required Choreo connection configuration key to refer the value from
             key: ServiceURL
