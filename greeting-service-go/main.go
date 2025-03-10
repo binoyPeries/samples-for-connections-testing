@@ -68,10 +68,10 @@ func main() {
 
 func greet(w http.ResponseWriter, r *http.Request) {
 	// Read environment variables
-	serviceURL := os.Getenv("CHOREO_TSTPUB_SERVICEURL")+"/greeting"
-	tokenURL := os.Getenv("CHOREO_TSTPUB_TOKENURL")
-	clientSecret := os.Getenv("CHOREO_TSTPUB_CONSUMERSECRET")
-	clientID := os.Getenv("CHOREO_TSTPUB_CONSUMERKEY")
+	serviceURL := os.Getenv("HR_SERVICE_URL")+"/greeting"
+	tokenURL := os.Getenv("CHOREO_TESTCONNBINOY_TOKENURL")
+	clientSecret := os.Getenv("CHOREO_TESTCONNBINOY_CONSUMERSECRET")
+	clientID := os.Getenv("CHOREO_TESTCONNBINOY_CONSUMERKEY")
 	
 	// Log the client ID for debugging
 	fmt.Printf("Client ID: %s\n", clientID)
