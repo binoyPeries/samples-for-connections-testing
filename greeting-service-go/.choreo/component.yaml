@@ -14,17 +14,3 @@ dependencies:
   connectionReferences:
     - name: testBinoyConnn
       resourceRef: service:/iasf/publishercomponent1-lx/v1/8b1c3/PUBLIC
-configuration:
-  # +optional List of environment variables to be injected into the component.
-  env:
-    # +required Name of the environment variable
-    - name: HR_SERVICE_URL
-      # +required value source
-      # Allowed value sources: connectionRef
-      valueFrom:
-        # +required Choreo connection value source
-        connectionRef:
-          # +required Choreo connection name to refer the value from
-          name: testBinoyConnn
-          # +required Choreo connection configuration key to refer the value from
-          key: ServiceURL
