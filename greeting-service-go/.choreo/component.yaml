@@ -14,11 +14,11 @@ dependencies:
   connectionReferences:
     - name: testBinoyConnn
       resourceRef: service:/iasf/publishercomponent1-lx/v1/8b1c3/PUBLIC
-configuration:
+configurations:
   # +optional List of environment variables to be injected into the component.
   env:
     # +required Name of the environment variable
-    - name: HR_SERVICE_URL
+    - name: HR_SERVICE_URL_TEST
       # +required value source
       # Allowed value sources: connectionRef
       valueFrom:
