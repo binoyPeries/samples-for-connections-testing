@@ -68,7 +68,7 @@ func main() {
 
 func greet(w http.ResponseWriter, r *http.Request) {
 	// Read environment variables
-	serviceURL := os.Getenv("HR_SERVICE_URL")+"/greeting"
+	serviceURL := os.Getenv("HR_SERVICE_URL_TEST")+"/greeting"
 	tokenURL := os.Getenv("CHOREO_TESTBINOYCONNN_TOKENURL")
 	clientSecret := os.Getenv("CHOREO_TESTBINOYCONNN_CONSUMERSECRET")
 	clientID := os.Getenv("CHOREO_TESTBINOYCONNN_CONSUMERKEY")
