@@ -71,7 +71,7 @@ func greet(w http.ResponseWriter, r *http.Request) {
 	serviceURL := os.Getenv("HR_SERVICE_URL_TEST")+"/greeting"
 	tokenURL := os.Getenv("CHOREO_TESTBINOYCONNN_TOKENURL")
 	clientSecret := os.Getenv("CHOREO_TESTBINOYCONNN_CONSUMERSECRET")
-	clientID := os.Getenv("CHOREO_TESTBINOYCONNN_CONSUMERKEY")
+	clientID := os.Getenv("HR_SERVICE_CONSUMER_KEY")
 	
 	// Log the client ID for debugging
 	fmt.Printf("Client ID: %s\n", clientID)
