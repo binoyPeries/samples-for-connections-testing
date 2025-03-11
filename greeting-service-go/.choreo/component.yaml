@@ -28,3 +28,17 @@ configurations:
           name: testBinoyConnn
           # +required Choreo connection configuration key to refer the value from
           key: ServiceURL
+configuration:
+  # +optional List of environment variables to be injected into the component.
+  env:
+    # +required Name of the environment variable
+    - name: HR_SERVICE_CONSUMER_KEY
+      # +required value source
+      # Allowed value sources: connectionRef
+      valueFrom:
+        # +required Choreo connection value source
+        connectionRef:
+          # +required Choreo connection name to refer the value from
+          name: testBinoyConnn
+          # +required Choreo connection configuration key to refer the value from
+          key: ConsumerKey
