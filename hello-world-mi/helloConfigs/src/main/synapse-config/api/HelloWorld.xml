@@ -38,7 +38,9 @@
                     <format>grant_type=client_credentials</format>
                 </payloadFactory>
             </call>
-
+            <log level="custom">
+                <property name="Token Endpoint Response" expression="get-property('body')"/>
+            </log>
             <property name="access_token" expression="json-eval($.access_token)" scope="default"/>
 
             <log level="custom">
