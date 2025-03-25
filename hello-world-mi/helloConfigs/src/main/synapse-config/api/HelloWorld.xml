@@ -22,7 +22,7 @@
                 <property expression="$ctx:app-client-auth" name="Base64 encoded client cred"/>
             </log>
 
-            <call>
+            <call blocking="true">
                 <endpoint>
                     <http method="POST" uri-template="{uri.var.token_url}"/>
                 </endpoint>
