@@ -13,9 +13,9 @@
                       scope="default" type="STRING" />
 
             <property expression="fn:concat($ctx:consumer_key, ':', $ctx:consumer_secret)" name="credentials" scope="default" type="STRING" />
-            <!-- Encode concatenated string using base64 -->
             <property expression="base64Encode(get-property('credentials'))" name="app-client-auth" scope="default" type="STRING" />
 
+            
 
             <log level="custom">
                 <property expression="$ctx:token_url" name="Token URL"/>
@@ -25,52 +25,36 @@
                 <property expression="$ctx:app-client-auth" name="Base64 encoded client cred"/>
             </log>
 
-
-            <payloadFactory media-type="xml">
-                <format>
-                    <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
-                        <soapenv:Body>
-                            <root xmlns="">
-                                <grant_type>client_credentials</grant_type>
-                            </root>
-                        </soapenv:Body>
-                    </soapenv:Envelope>
-                </format>
-                <args />
-            </payloadFactory>
-
-            <header expression="fn:concat('Basic ', get-property('app-client-auth'))" name="Authorization" scope="transport" />
-            <header name="Content-Type" scope="transport" value="application/x-www-form-urlencoded" />
-            <property description="messageType" name="messageType" scope="axis2" type="STRING" value="application/x-www-form-urlencoded" />
-            <call blocking="true">
+            <call>
                 <endpoint>
-                    <http method="post" uri-template="{uri.var.token_url}" />
+                    <http method="POST" uri-template="{uri.var.token_url}"/>
                 </endpoint>
+                <set>
+                    <property name="messageType" value="application/x-www-form-urlencoded" scope="axis2"/>
+                    <property name="Authorization" expression="fn:concat('Basic ', base64Encode(fn:concat($ctx:consumer_key, ':', $ctx:consumer_secret)))" scope="transport"/>
+                </set>
+                <payloadFactory media-type="x-www-form-urlencoded">
+                    <format>grant_type=client_credentials</format>
+                </payloadFactory>
             </call>
 
-            <property description="generated_token" expression="json-eval($.access_token)" name="generated-access-token" scope="default" type="STRING" />
-            <header expression="fn:concat('Bearer ', get-property('generated-access-token'))" name="Authorization" scope="transport" />
+            <property name="access_token" expression="json-eval($.access_token)" scope="default"/>
+
+            <log level="custom">
+                <property expression="$ctx:accessToken" name="access_token"/>
+            </log>
+            
+            <header expression="fn:concat('Bearer ', get-property('access_token'))" name="Authorization" scope="transport" />
             <!-- Making GET request to svc_url -->
             <call blocking="true">
                 <endpoint>
-                    <http method="get" uri-template="{uri.var.service_url}" />
+                    <http method="get" uri-template="{uri.var.service_url}/greetings" />
                 </endpoint>
             </call>
 
-            <property expression="json-eval($)" name="response-body" />
-
-            <!-- Logging only the response body -->
-            <log level="custom">
-                <property expression="$ctx:response-body" name="Resposne Body"/>
+            <log level="full">
+               <property name="ResponsePayload" expression="get-property('body')" />       
             </log>
-
-            <!-- Use payloadFactory to set response body -->
-            <payloadFactory media-type="json">
-                <format>{"response_body":"$1"}</format>
-                <args>
-                    <arg evaluator="xml" expression="get-property('response-body')"/>
-                </args>
-            </payloadFactory>
 
             <respond/>
         </inSequence>
