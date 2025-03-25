@@ -14,14 +14,11 @@
 
             <property expression="fn:concat($ctx:consumer_key, ':', $ctx:consumer_secret)" name="credentials" scope="default" type="STRING" />
             <property expression="base64Encode(get-property('credentials'))" name="app-client-auth" scope="default" type="STRING" />
-
-            
-
             <log level="custom">
-                <property expression="$ctx:token_url" name="Token URL"/>
+                <property expression="get-property('uri.var.token_url')" name="Token URL"/>
                 <property expression="$ctx:consumer_key" name="Consumer Key"/>
                 <property expression="$ctx:consumer_secret" name="Consumer Secret"/>
-                <property expression="$ctx:service_url" name="Service URL"/>
+                <property expression="get-property('uri.var.service_url')" name="Service URL"/>
                 <property expression="$ctx:app-client-auth" name="Base64 encoded client cred"/>
             </log>
 
