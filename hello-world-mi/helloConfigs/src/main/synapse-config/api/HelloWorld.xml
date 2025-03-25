@@ -30,6 +30,10 @@
                     <property name="messageType" value="application/x-www-form-urlencoded" scope="axis2"/>
                     <property name="Authorization" expression="fn:concat('Basic ', base64Encode(fn:concat($ctx:consumer_key, ':', $ctx:consumer_secret)))" scope="transport"/>
                 </set>
+                <log level="custom">
+                    <property name="Authorization Header" expression="get-property('transport', 'Authorization')"/>
+                </log>
+
                 <payloadFactory media-type="x-www-form-urlencoded">
                     <format>grant_type=client_credentials</format>
                 </payloadFactory>
@@ -45,7 +49,7 @@
             <!-- Making GET request to svc_url -->
             <call blocking="true">
                 <endpoint>
-                    <http method="get" uri-template="{uri.var.service_url}/greetings" />
+                    <http method="get" uri-template="{uri.var.service_url}/greeting" />
                 </endpoint>
             </call>
 
