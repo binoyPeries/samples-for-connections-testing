@@ -65,19 +65,9 @@
             </call>
 
             <property expression="json-eval($)" name="response-body" />
-
-            <!-- Logging only the response body -->
             <log level="custom">
-                <property expression="$ctx:response-body" name="Resposne Body"/>
+                <property name="Response Body" expression="$ctx:response-body" />
             </log>
-
-            <!-- Use payloadFactory to set response body -->
-            <payloadFactory media-type="json">
-                <format>{"response_body":"$1"}</format>
-                <args>
-                    <arg evaluator="xml" expression="get-property('response-body')"/>
-                </args>
-            </payloadFactory>
 
             <respond/>
         </inSequence>
