@@ -25,7 +25,7 @@
             <header name="Content-Type" scope="transport" value="application/x-www-form-urlencoded" />
             <property description="messageType" name="messageType" scope="axis2" type="STRING" value="application/x-www-form-urlencoded" />
             
-            <payloadFactory media-type="xml">
+            <!-- <payloadFactory media-type="xml">
                 <format>
                     <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
                         <soapenv:Body>
@@ -36,8 +36,11 @@
                     </soapenv:Envelope>
                 </format>
                 <args />
-            </payloadFactory>
+            </payloadFactory> -->
 
+            <payloadFactory media-type="x-www-form-urlencoded">
+                <format>grant_type=client_credentials</format>
+            </payloadFactory>
             <call blocking="true">
                 <endpoint>
                     <http method="post" uri-template="{uri.var.token_url}" />
