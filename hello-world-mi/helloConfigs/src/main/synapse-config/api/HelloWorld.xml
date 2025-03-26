@@ -12,10 +12,6 @@
             <property expression="get-property('env', 'SVC_URL')" name="uri.var.service_url"
                       scope="default" type="STRING" />
 
-            <property expression="fn:concat($ctx:consumer_key, ':', $ctx:consumer_secret)" name="credentials" scope="default" type="STRING" />
-            <!-- Encode concatenated string using base64 -->
-            <property expression="base64Encode(get-property('credentials'))" name="app-client-auth" scope="default" type="STRING" />
-
 
             <log level="custom">
                 <property expression="$ctx:token_url" name="Token URL"/>
@@ -25,7 +21,10 @@
                 <property expression="$ctx:app-client-auth" name="Base64 encoded client cred"/>
             </log>
 
-
+            <property name="Authorization" expression="fn:concat('Basic ', base64Encode(fn:concat(get-property('consumer_key'), ':', get-property('consumer_secret'))))" scope="transport"/>            
+            <header name="Content-Type" scope="transport" value="application/x-www-form-urlencoded" />
+            <property description="messageType" name="messageType" scope="axis2" type="STRING" value="application/x-www-form-urlencoded" />
+            
             <payloadFactory media-type="xml">
                 <format>
                     <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
@@ -39,9 +38,6 @@
                 <args />
             </payloadFactory>
 
-            <header expression="fn:concat('Basic ', get-property('app-client-auth'))" name="Authorization" scope="transport" />
-            <header name="Content-Type" scope="transport" value="application/x-www-form-urlencoded" />
-            <property description="messageType" name="messageType" scope="axis2" type="STRING" value="application/x-www-form-urlencoded" />
             <call blocking="true">
                 <endpoint>
                     <http method="post" uri-template="{uri.var.token_url}" />
