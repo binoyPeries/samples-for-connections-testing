@@ -1,27 +1,31 @@
 <api context="/HelloWorld" name="HelloWorld" xmlns="http://ws.apache.org/ns/synapse">
     <resource methods="GET">
         <inSequence>
+            <!-- Getting env variables -->
+            <property expression="get-property('env', 'TOKEN_URL')" name="uri.var.token_url"
+                      scope="default" type="STRING" />
+            <property expression="get-property('env', 'CONSUMER_KEY')" name="consumer_key"
+                      scope="default" type="STRING" />
+            <property expression="get-property('env', 'CONSUMER_SECRET')"
+                      name="consumer_secret"
+                      scope="default" type="STRING" />
+            <property expression="get-property('env', 'SVC_URL')" name="uri.var.service_url"
+                      scope="default" type="STRING" />
 
-            <!-- Get environment variables -->
-            <property expression="get-property('env', 'TOKEN_URL')" name="uri.var.token_url" scope="default" type="STRING"/>
-            <property expression="get-property('env', 'CONSUMER_KEY')" name="consumer_key" scope="default" type="STRING"/>
-            <property expression="get-property('env', 'CONSUMER_SECRET')" name="consumer_secret" scope="default" type="STRING"/>
-            <property expression="get-property('env', 'SVC_URL')" name="uri.var.service_url" scope="default" type="STRING"/>
+            <property expression="fn:concat($ctx:consumer_key, ':', $ctx:consumer_secret)" name="credentials" scope="default" type="STRING" />
+            <!-- Encode concatenated string using base64 -->
+            <property expression="base64Encode(get-property('credentials'))" name="app-client-auth" scope="default" type="STRING" />
 
-            <!-- Log environment variables -->
+
             <log level="custom">
-                <property name="Token URL" expression="get-property('uri.var.token_url')"/>
-                <property name="Consumer Key" expression="get-property('consumer_key')"/>
-                <property name="Consumer Secret" expression="get-property('consumer_secret')"/>
-                <property name="Service URL" expression="get-property('uri.var.service_url')"/>
+                <property expression="$ctx:token_url" name="Token URL"/>
+                <property expression="$ctx:consumer_key" name="Consumer Key"/>
+                <property expression="$ctx:consumer_secret" name="Consumer Secret"/>
+                <property expression="$ctx:service_url" name="Service URL"/>
+                <property expression="$ctx:app-client-auth" name="Base64 encoded client cred"/>
             </log>
 
-            <!-- Set Authorization and Content-Type headers for token request -->
-            <property name="Authorization" expression="fn:concat('Basic ', base64Encode(fn:concat(get-property('consumer_key'), ':', get-property('consumer_secret'))))" scope="transport"/>
-            <property name="messageType" value="application/x-www-form-urlencoded" scope="axis2"/>
-            <header name="Content-Type" value="application/x-www-form-urlencoded" scope="transport"/>
 
-            <!-- Token request body -->
             <payloadFactory media-type="xml">
                 <format>
                     <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
@@ -35,45 +39,42 @@
                 <args />
             </payloadFactory>
 
-            <!-- Make token request -->
+            <header expression="fn:concat('Basic ', get-property('app-client-auth'))" name="Authorization" scope="transport" />
+            <header name="Content-Type" scope="transport" value="application/x-www-form-urlencoded" />
+            <property description="messageType" name="messageType" scope="axis2" type="STRING" value="application/x-www-form-urlencoded" />
             <call blocking="true">
                 <endpoint>
-                    <http method="POST" uri-template="{uri.var.token_url}"/>
+                    <http method="post" uri-template="{uri.var.token_url}" />
                 </endpoint>
             </call>
 
-            <!-- Log token call response -->
-            <property name="token_call_status" expression="get-property('axis2', 'HTTP_SC')" scope="default"/>
-            <log level="custom">
-                <property name="Token Call HTTP Status" expression="get-property('token_call_status')"/>
-                <property name="Token Endpoint Response" expression="get-property('body')"/>
-            </log>
-
-            <!-- Extract access token -->
-            <property name="access_token" expression="json-eval($.access_token)" scope="default"/>
-            <log level="custom">
-                <property name="Extracted Access Token" expression="get-property('access_token')"/>
-            </log>
-
-            <!-- Set Authorization header for actual service call -->
-            <header name="Authorization" expression="fn:concat('Bearer ', get-property('access_token'))" scope="transport"/>
-
-            <!-- Call the actual service -->
+            <property description="generated_token" expression="json-eval($.access_token)" name="generated-access-token" scope="default" type="STRING" />
+            <header expression="fn:concat('Bearer ', get-property('generated-access-token'))" name="Authorization" scope="transport" />
+            <!-- Making GET request to svc_url -->
             <call blocking="true">
                 <endpoint>
-                    <http method="GET" uri-template="{uri.var.service_url}/greeting"/>
+                    <http method="get" uri-template="{uri.var.service_url}/greeting" />
                 </endpoint>
             </call>
 
-            <!-- Log service response -->
-            <log level="full">
-                <property name="Service Response" expression="get-property('body')"/>
+            <property expression="json-eval($)" name="response-body" />
+
+            <!-- Logging only the response body -->
+            <log level="custom">
+                <property expression="$ctx:response-body" name="Resposne Body"/>
             </log>
+
+            <!-- Use payloadFactory to set response body -->
+            <payloadFactory media-type="json">
+                <format>{"response_body":"$1"}</format>
+                <args>
+                    <arg evaluator="xml" expression="get-property('response-body')"/>
+                </args>
+            </payloadFactory>
 
             <respond/>
-
         </inSequence>
-        <outSequence/>
-        <faultSequence/>
+        <outSequence />
+        <faultSequence />
     </resource>
 </api>
