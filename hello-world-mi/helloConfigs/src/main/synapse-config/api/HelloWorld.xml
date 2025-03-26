@@ -1,27 +1,21 @@
 <api context="/HelloWorld" name="HelloWorld" xmlns="http://ws.apache.org/ns/synapse">
     <resource methods="GET">
         <inSequence>
-            <!-- Getting env variables -->
-            <property expression="get-property('env', 'TOKEN_URL')" name="uri.var.token_url"
-                      scope="default" type="STRING" />
-            <property expression="get-property('env', 'CONSUMER_KEY')" name="consumer_key"
-                      scope="default" type="STRING" />
-            <property expression="get-property('env', 'CONSUMER_SECRET')"
-                      name="consumer_secret"
-                      scope="default" type="STRING" />
-            <property expression="get-property('env', 'SVC_URL')" name="uri.var.service_url"
-                      scope="default" type="STRING" />
+            <!-- Get environment variables -->
+            <property expression="get-property('env', 'TOKEN_URL')" name="uri.var.token_url" scope="default" type="STRING"/>
+            <property expression="get-property('env', 'CONSUMER_KEY')" name="consumer_key" scope="default" type="STRING"/>
+            <property expression="get-property('env', 'CONSUMER_SECRET')" name="consumer_secret" scope="default" type="STRING"/>
+            <property expression="get-property('env', 'SVC_URL')" name="uri.var.service_url" scope="default" type="STRING"/>
 
-            <property expression="fn:concat($ctx:consumer_key, ':', $ctx:consumer_secret)" name="credentials" scope="default" type="STRING" />
-            <property expression="base64Encode(get-property('credentials'))" name="app-client-auth" scope="default" type="STRING" />
+            <!-- Log env variables -->
             <log level="custom">
-                <property expression="get-property('uri.var.token_url')" name="Token URL"/>
-                <property expression="$ctx:consumer_key" name="Consumer Key"/>
-                <property expression="$ctx:consumer_secret" name="Consumer Secret"/>
-                <property expression="get-property('uri.var.service_url')" name="Service URL"/>
-                <property expression="$ctx:app-client-auth" name="Base64 encoded client cred"/>
+                <property name="Token URL" expression="get-property('uri.var.token_url')"/>
+                <property name="Consumer Key" expression="$ctx:consumer_key"/>
+                <property name="Consumer Secret" expression="$ctx:consumer_secret"/>
+                <property name="Service URL" expression="get-property('uri.var.service_url')"/>
             </log>
 
+            <!-- Token request (OAuth2 Client Credentials Grant) -->
             <call blocking="true">
                 <endpoint>
                     <http method="POST" uri-template="{uri.var.token_url}"/>
@@ -30,38 +24,40 @@
                     <property name="messageType" value="application/x-www-form-urlencoded" scope="axis2"/>
                     <property name="Authorization" expression="fn:concat('Basic ', base64Encode(fn:concat($ctx:consumer_key, ':', $ctx:consumer_secret)))" scope="transport"/>
                 </set>
-                <log level="custom">
-                    <property name="Authorization Header" expression="get-property('transport', 'Authorization')"/>
-                </log>
-
                 <payloadFactory media-type="x-www-form-urlencoded">
                     <format>grant_type=client_credentials</format>
                 </payloadFactory>
             </call>
+
+            <!-- Log token response status and body -->
+            <property name="token_call_status" expression="get-property('axis2', 'HTTP_SC')" scope="default"/>
             <log level="custom">
+                <property name="Token Call HTTP Status" expression="$ctx:token_call_status"/>
                 <property name="Token Endpoint Response" expression="get-property('body')"/>
             </log>
-            <property name="access_token" expression="json-eval($.access_token)" scope="default"/>
 
+            <!-- Extract access token -->
+            <property name="access_token" expression="json-eval($.access_token)" scope="default"/>
             <log level="custom">
-                <property expression="$ctx:accessToken" name="access_token"/>
+                <property name="Extracted Access Token" expression="$ctx:access_token"/>
             </log>
-            
-            <header expression="fn:concat('Bearer ', get-property('access_token'))" name="Authorization" scope="transport" />
-            <!-- Making GET request to svc_url -->
+
+            <!-- Call actual service using Bearer token -->
+            <header expression="fn:concat('Bearer ', get-property('access_token'))" name="Authorization" scope="transport"/>
             <call blocking="true">
                 <endpoint>
-                    <http method="get" uri-template="{uri.var.service_url}/greeting" />
+                    <http method="GET" uri-template="{uri.var.service_url}/greeting"/>
                 </endpoint>
             </call>
 
+            <!-- Log service response -->
             <log level="full">
-               <property name="ResponsePayload" expression="get-property('body')" />       
+                <property name="Service Response" expression="get-property('body')"/>
             </log>
 
             <respond/>
         </inSequence>
-        <outSequence />
-        <faultSequence />
+        <outSequence/>
+        <faultSequence/>
     </resource>
 </api>
