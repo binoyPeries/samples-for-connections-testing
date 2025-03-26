@@ -1,49 +1,55 @@
 <api context="/HelloWorld" name="HelloWorld" xmlns="http://ws.apache.org/ns/synapse">
     <resource methods="GET">
         <inSequence>
+
             <!-- Get environment variables -->
             <property expression="get-property('env', 'TOKEN_URL')" name="uri.var.token_url" scope="default" type="STRING"/>
             <property expression="get-property('env', 'CONSUMER_KEY')" name="consumer_key" scope="default" type="STRING"/>
             <property expression="get-property('env', 'CONSUMER_SECRET')" name="consumer_secret" scope="default" type="STRING"/>
             <property expression="get-property('env', 'SVC_URL')" name="uri.var.service_url" scope="default" type="STRING"/>
 
-            <!-- Log env variables -->
+            <!-- Log environment variables -->
             <log level="custom">
                 <property name="Token URL" expression="get-property('uri.var.token_url')"/>
-                <property name="Consumer Key" expression="$ctx:consumer_key"/>
-                <property name="Consumer Secret" expression="$ctx:consumer_secret"/>
+                <property name="Consumer Key" expression="get-property('consumer_key')"/>
+                <property name="Consumer Secret" expression="get-property('consumer_secret')"/>
                 <property name="Service URL" expression="get-property('uri.var.service_url')"/>
             </log>
 
-            <!-- Token request (OAuth2 Client Credentials Grant) -->
+            <!-- Set Authorization and Content-Type headers for token request -->
+            <property name="Authorization" expression="fn:concat('Basic ', base64Encode(fn:concat(get-property('consumer_key'), ':', get-property('consumer_secret'))))" scope="transport"/>
+            <property name="messageType" value="application/x-www-form-urlencoded" scope="axis2"/>
+            <header name="Content-Type" value="application/x-www-form-urlencoded" scope="transport"/>
+
+            <!-- Token request body -->
+            <payloadFactory media-type="x-www-form-urlencoded">
+                <format>grant_type=client_credentials</format>
+            </payloadFactory>
+
+            <!-- Make token request -->
             <call blocking="true">
                 <endpoint>
                     <http method="POST" uri-template="{uri.var.token_url}"/>
                 </endpoint>
-                <set>
-                    <property name="messageType" value="application/x-www-form-urlencoded" scope="axis2"/>
-                    <property name="Authorization" expression="fn:concat('Basic ', base64Encode(fn:concat($ctx:consumer_key, ':', $ctx:consumer_secret)))" scope="transport"/>
-                </set>
-                <payloadFactory media-type="x-www-form-urlencoded">
-                    <format>grant_type=client_credentials</format>
-                </payloadFactory>
             </call>
 
-            <!-- Log token response status and body -->
+            <!-- Log token call response -->
             <property name="token_call_status" expression="get-property('axis2', 'HTTP_SC')" scope="default"/>
             <log level="custom">
-                <property name="Token Call HTTP Status" expression="$ctx:token_call_status"/>
+                <property name="Token Call HTTP Status" expression="get-property('token_call_status')"/>
                 <property name="Token Endpoint Response" expression="get-property('body')"/>
             </log>
 
             <!-- Extract access token -->
             <property name="access_token" expression="json-eval($.access_token)" scope="default"/>
             <log level="custom">
-                <property name="Extracted Access Token" expression="$ctx:access_token"/>
+                <property name="Extracted Access Token" expression="get-property('access_token')"/>
             </log>
 
-            <!-- Call actual service using Bearer token -->
-            <header expression="fn:concat('Bearer ', get-property('access_token'))" name="Authorization" scope="transport"/>
+            <!-- Set Authorization header for actual service call -->
+            <header name="Authorization" expression="fn:concat('Bearer ', get-property('access_token'))" scope="transport"/>
+
+            <!-- Call the actual service -->
             <call blocking="true">
                 <endpoint>
                     <http method="GET" uri-template="{uri.var.service_url}/greeting"/>
@@ -56,6 +62,7 @@
             </log>
 
             <respond/>
+
         </inSequence>
         <outSequence/>
         <faultSequence/>
