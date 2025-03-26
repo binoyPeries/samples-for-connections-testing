@@ -12,6 +12,17 @@
             <property expression="get-property('env', 'SVC_URL')" name="uri.var.service_url"
                       scope="default" type="STRING" />
 
+            <!-- Combine and base64 encode client credentials in one step -->
+            <property name="app-client-auth"
+                    expression="base64Encode(fn:concat(get-property('consumer_key'), ':', get-property('consumer_secret')))"
+                    scope="default"
+                    type="STRING"/>
+
+            <!-- Log the encoded result -->
+            <log level="custom">
+                <property name="Base64 Encoded Credentials" expression="get-property('app-client-auth')"/>
+            </log>
+
 
             <log level="custom">
                 <property expression="$ctx:token_url" name="Token URL"/>
@@ -21,11 +32,8 @@
                 <property expression="$ctx:app-client-auth" name="Base64 encoded client cred"/>
             </log>
 
-            <property name="Authorization" expression="fn:concat('Basic ', base64Encode(fn:concat(get-property('consumer_key'), ':', get-property('consumer_secret'))))" scope="transport"/>            
-            <header name="Content-Type" scope="transport" value="application/x-www-form-urlencoded" />
-            <property description="messageType" name="messageType" scope="axis2" type="STRING" value="application/x-www-form-urlencoded" />
-            
-            <!-- <payloadFactory media-type="xml">
+
+            <payloadFactory media-type="xml">
                 <format>
                     <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
                         <soapenv:Body>
@@ -36,11 +44,11 @@
                     </soapenv:Envelope>
                 </format>
                 <args />
-            </payloadFactory> -->
-
-            <payloadFactory media-type="x-www-form-urlencoded">
-                <format>grant_type=client_credentials</format>
             </payloadFactory>
+
+            <header expression="fn:concat('Basic ', get-property('app-client-auth'))" name="Authorization" scope="transport" />
+            <header name="Content-Type" scope="transport" value="application/x-www-form-urlencoded" />
+            <property description="messageType" name="messageType" scope="axis2" type="STRING" value="application/x-www-form-urlencoded" />
             <call blocking="true">
                 <endpoint>
                     <http method="post" uri-template="{uri.var.token_url}" />
