@@ -11,6 +11,6 @@ endpoints:
       - Public
     schemaFilePath: openapi.yaml
 dependencies:
-  connectionReferences:
-    - name: testBinoyConnn1
+    connectionReferences:
+    - name: testBinoyConnn2
       resourceRef: service:/iasf/publishercomponent1/v1/8b1c3/PUBLIC
