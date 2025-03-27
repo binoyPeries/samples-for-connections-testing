@@ -13,4 +13,4 @@ endpoints:
 dependencies:
   connectionReferences:
     - name: testBinoyConnn
-      resourceRef: service:/iasf/publishercomponent1-lx/1.0.0/8b1c3/PUBLIC
+      resourceRef: service:/eyer/testpublisher-er/v1/8b1c3/PUBLIC
