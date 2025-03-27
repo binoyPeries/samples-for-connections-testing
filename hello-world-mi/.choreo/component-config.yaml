@@ -3,7 +3,7 @@ kind: ComponentConfig
 spec:
   inbound:
     - name: MI Hello world
-      port: 8290
+      port: 8390
       type: REST
       networkVisibility: Public
       context: /
