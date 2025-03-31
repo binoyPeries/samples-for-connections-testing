@@ -1,4 +1,4 @@
-schemaVersion: "1.1"
+schemaVersion: "1.2"
 endpoints:
   - name: go-greeter-803
     displayName: Go Greeter
@@ -12,5 +12,5 @@ endpoints:
     schemaFilePath: openapi.yaml
 dependencies:
     connectionReferences:
-    - name: testBinoyConnn2
-      resourceRef: service:/iasf/publishercomponent1/v1/8b1c3/PUBLIC
+    - name: testconpublic
+      resourceRef: service:/release-test---hansi/greeting-service/v1/8b1c3/PUBLIC
