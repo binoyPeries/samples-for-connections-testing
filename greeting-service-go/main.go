@@ -39,7 +39,7 @@ func main() {
 	serverMux.HandleFunc("/greeter/greet", greet)
 	serverMux.HandleFunc("/greeter/env", getEnvVars)
 
-	serverPort := 9093
+	serverPort := 9094
 	server := http.Server{
 		Addr:    fmt.Sprintf(":%d", serverPort),
 		Handler: serverMux,
