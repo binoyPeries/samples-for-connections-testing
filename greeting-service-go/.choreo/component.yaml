@@ -1,6 +1,6 @@
 schemaVersion: "1.2"
 endpoints:
-  - name: go-greeter-svc
+  - name: go-greeter-svc-con
     displayName: Go Greeter
     service:
       basePath: /
@@ -12,5 +12,5 @@ endpoints:
     schemaFilePath: openapi.yaml
 dependencies:
     connectionReferences:
-    - name: testReleaseCon
+    - name: greeting-service-conn
       resourceRef: service:/release-test---hansi/greeting-service/v1/8b1c3/PUBLIC
