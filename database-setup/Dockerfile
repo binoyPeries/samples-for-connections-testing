@@ -1,26 +1,41 @@
 FROM mysql:8.3
 
-# Create a non-root user with UID > 1024
-RUN groupadd -g 10001 mygroup && \
-    useradd -u 10001 -g mygroup -s /bin/bash -m myuser
+# Create a writable data directory
+RUN mkdir -p /tmp/mysql && chown -R mysql:mysql /tmp/mysql
 
-# Create a new writable data directory
-RUN mkdir -p /tmp/mysql && chown -R myuser:mygroup /tmp/mysql
-
-# Set environment variable so MySQL knows where to store data
-ENV MYSQL_DATADIR=/tmp/mysql
-
-# Copy init script (will run only on first container start)
+# Copy init script
 COPY init.sql /docker-entrypoint-initdb.d/
 
-# Set required MySQL environment variables (adjust as needed)
+# Set env vars
 ENV MYSQL_ROOT_PASSWORD=rootpass
 ENV MYSQL_DATABASE=mydb
 ENV MYSQL_USER=myuser
 ENV MYSQL_PASSWORD=mypassword
 
-# Run as non-root user
-USER 10001
+# Override data directory via env
+ENV MYSQL_DATADIR=/tmp/mysql
 
-# Start MySQL with custom data dir
-CMD ["mysqld", "--datadir=/tmp/mysql"]
+# # Create a non-root user with UID > 1024
+# RUN groupadd -g 10001 mygroup && \
+#     useradd -u 10001 -g mygroup -s /bin/bash -m myuser
+
+# # Create a new writable data directory
+# RUN mkdir -p /tmp/mysql && chown -R myuser:mygroup /tmp/mysql
+
+# # Set environment variable so MySQL knows where to store data
+# ENV MYSQL_DATADIR=/tmp/mysql
+
+# # Copy init script (will run only on first container start)
+# COPY init.sql /docker-entrypoint-initdb.d/
+
+# # Set required MySQL environment variables (adjust as needed)
+# ENV MYSQL_ROOT_PASSWORD=rootpass
+# ENV MYSQL_DATABASE=mydb
+# ENV MYSQL_USER=myuser
+# ENV MYSQL_PASSWORD=mypassword
+
+# # Run as non-root user
+# USER 10001
+
+# # Start MySQL with custom data dir
+# CMD ["mysqld", "--datadir=/tmp/mysql"]
