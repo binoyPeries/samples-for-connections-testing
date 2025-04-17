@@ -20,7 +20,7 @@ ENV MYSQL_USER=myuser
 ENV MYSQL_PASSWORD=mypassword
 
 # Run as non-root user
-USER myuser
+USER 10001
 
 # Start MySQL with custom data dir
 CMD ["mysqld", "--datadir=/tmp/mysql"]
