@@ -23,8 +23,5 @@ USER 10001
 
 # Start MySQL with custom datadir and socket path
 # Start MySQL with all writable paths set to /tmp
-CMD ["mysqld", 
-     "--datadir=/tmp/mysql", 
-     "--socket=/tmp/mysqld/mysqld.sock", 
-     "--pid-file=/tmp/mysqld/mysqld.pid", 
-     "--mysqlx-socket=/tmp/mysqld/mysqlx.sock"]
+CMD ["mysqld", "--datadir=/tmp/mysql", "--socket=/tmp/mysqld/mysqld.sock", "--pid-file=/tmp/mysqld/mysqld.pid", "--mysqlx-socket=/tmp/mysqld/mysqlx.sock"]
+
