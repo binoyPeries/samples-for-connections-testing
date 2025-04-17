@@ -1,8 +1,8 @@
 FROM mysql:8
 
 # Create a non-root user with UID > 1024
-RUN groupadd -g 3000 mygroup && \
-    useradd -u 3000 -g mygroup -s /bin/bash -m myuser
+RUN groupadd -g 10001 mygroup && \
+    useradd -u 10001 -g mygroup -s /bin/bash -m myuser
 
 # Create a new writable data directory
 RUN mkdir -p /tmp/mysql && chown -R myuser:mygroup /tmp/mysql
