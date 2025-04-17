@@ -1,4 +1,4 @@
-FROM mysql:9
+FROM mysql:8.3
 
 # Create a non-root user with UID > 1024
 RUN groupadd -g 10001 mygroup && \
