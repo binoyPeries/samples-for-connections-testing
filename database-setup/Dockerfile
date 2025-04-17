@@ -4,23 +4,22 @@ FROM mysql:8.3
 RUN groupadd -g 10001 mygroup && \
     useradd -u 10001 -g mygroup -s /bin/bash -m myuser
 
-# Create a new writable data directory
-RUN mkdir -p /tmp/mysql && chown -R myuser:mygroup /tmp/mysql
+# Create new writable directories
+RUN mkdir -p /tmp/mysql /tmp/mysqld && \
+    chown -R myuser:mygroup /tmp/mysql /tmp/mysqld
 
-# Set environment variable so MySQL knows where to store data
+# Set environment variables
 ENV MYSQL_DATADIR=/tmp/mysql
-
-# Copy init script (will run only on first container start)
-COPY init.sql /docker-entrypoint-initdb.d/
-
-# Set required MySQL environment variables (adjust as needed)
 ENV MYSQL_ROOT_PASSWORD=rootpass
 ENV MYSQL_DATABASE=mydb
 ENV MYSQL_USER=myuser
 ENV MYSQL_PASSWORD=mypassword
 
-# Run as non-root user
+# Copy init script (must be owned by mysql user for init)
+COPY --chown=10001:10001 init.sql /docker-entrypoint-initdb.d/
+
+# Switch to non-root user
 USER 10001
 
-# Start MySQL with custom data dir
-CMD ["mysqld", "--datadir=/tmp/mysql"]
+# Start MySQL with custom datadir and socket path
+CMD ["mysqld", "--datadir=/tmp/mysql", "--socket=/tmp/mysqld/mysqld.sock"]
