@@ -22,4 +22,9 @@ COPY --chown=10001:10001 init.sql /docker-entrypoint-initdb.d/
 USER 10001
 
 # Start MySQL with custom datadir and socket path
-CMD ["mysqld", "--datadir=/tmp/mysql", "--socket=/tmp/mysqld/mysqld.sock"]
+# Start MySQL with all writable paths set to /tmp
+CMD ["mysqld", 
+     "--datadir=/tmp/mysql", 
+     "--socket=/tmp/mysqld/mysqld.sock", 
+     "--pid-file=/tmp/mysqld/mysqld.pid", 
+     "--mysqlx-socket=/tmp/mysqld/mysqlx.sock"]
