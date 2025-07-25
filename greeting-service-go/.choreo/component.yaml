@@ -12,5 +12,5 @@ endpoints:
     schemaFilePath: openapi.yaml
 dependencies:
     connectionReferences:
-    - name: TestConnection
-      resourceRef: service:/release-test---hansi/greeting-service-zw/v1/8b1c3/PUBLIC
+    - name: testcon3
+      resourceRef: service:/release-test-hansi-v2/greeting-service/v1/8b1c3/PUBLIC
