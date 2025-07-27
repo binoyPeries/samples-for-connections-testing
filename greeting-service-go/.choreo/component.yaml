@@ -12,5 +12,5 @@ endpoints:
     schemaFilePath: openapi.yaml
 dependencies:
     connectionReferences:
-    - name: testcon4
-      resourceRef: service:/release-test---hansi/greeting-service-fc/v1/8b1c3/PUBLIC
+    - name: TestCon5
+      resourceRef: thirdparty:Twilio/v1
