@@ -12,5 +12,5 @@ endpoints:
     schemaFilePath: openapi.yaml
 dependencies:
     connectionReferences:
-    - name: TestCon5
-      resourceRef: thirdparty:Twilio/v1
+    - name: testcon5
+      resourceRef: service:/my-testing-project/greeting-service-pub-pub/v1/8b1c3/PUBLIC
