@@ -12,5 +12,5 @@ endpoints:
     schemaFilePath: openapi.yaml
 dependencies:
     connectionReferences:
-    - name: testcon5
-      resourceRef: service:/my-testing-project/greeting-service-pub-pub/v1/8b1c3/PUBLIC
+    - name: testCon7
+      resourceRef: service:/mongotestproject/greeting-service-mongo-se/v1/8b1c3/PUBLIC
