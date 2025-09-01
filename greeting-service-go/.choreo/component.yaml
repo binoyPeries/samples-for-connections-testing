@@ -12,5 +12,5 @@ endpoints:
     schemaFilePath: openapi.yaml
 dependencies:
     connectionReferences:
-    - name: testCon7
-      resourceRef: service:/mongotestproject/greeting-service-mongo-se/v1/8b1c3/PUBLIC
+    - name: gqlcon
+      resourceRef: service:/connection-v2/graphql-service/v1/5912a/PUBLIC
