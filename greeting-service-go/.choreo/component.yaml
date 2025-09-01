@@ -13,4 +13,4 @@ endpoints:
 dependencies:
     connectionReferences:
     - name: gqlcon
-      resourceRef: service:/connection-v2/graphql-service/v1/5912a/PUBLIC
+      resourceRef: service:/connection-v2/graphql-service-si/v1/5912a/PUBLIC
