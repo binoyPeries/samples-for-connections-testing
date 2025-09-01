@@ -102,7 +102,7 @@ func greet(w http.ResponseWriter, r *http.Request) {
 	}
 
 	payload := gqlRequest{
-		Query: `query GreetWorld { greeting(name: "World") }`,
+		Query: `query GreetWorld { greeting(name: "Hansiii") }`,
 	}
 	bodyBytes, err := json.Marshal(payload)
 	if err != nil {
