@@ -3,7 +3,7 @@ import ballerina/os;
 import ballerina/io;
 
 // Load configs from environment
-configurable string serviceURL1 = os:getEnv("CHOREO_TESTGL3_SERVICEURL");
+string serviceURL1 = os:getEnv("CHOREO_TESTGL3_SERVICEURL");
 configurable string consumerKey = os:getEnv("CHOREO_TESTGL3_CONSUMERKEY");
 configurable string consumerSecret = os:getEnv("CHOREO_TESTGL3_CONSUMERSECRET");
 configurable string tokenURL = os:getEnv("CHOREO_TESTGL3_TOKENURL");
