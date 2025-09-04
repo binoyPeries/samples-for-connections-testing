@@ -6,10 +6,11 @@ service /hello on new http:Listener(8090) {
 
     resource function get greeting() returns json|error {
         // Load configs from environment
-        string serviceURL = os:getEnv("SVC_URL");
-        string tokenURL = os:getEnv("TOKEN_URL");
-        string consumerKey = os:getEnv("CONSUMER_KEY");
-        string consumerSecret = os:getEnv("CONSUMER_SECRET");
+        configurable string serviceURL = os:getEnv("CHOREO_TESTGL3_SERVICEURL");
+        configurable string consumerKey = os:getEnv("CHOREO_TESTGL3_CONSUMERKEY");
+        configurable string consumerSecret = os:getEnv("CHOREO_TESTGL3_CONSUMERSECRET");
+        configurable string tokenURL = os:getEnv("CHOREO_TESTGL3_TOKENURL");
+        configurable string choreoApiKey = os:getEnv("CHOREO_TESTGL3_APIKEY");
 
         io:println("SVC_URL: " + serviceURL);
         io:println("TOKEN_URL: " + tokenURL);
