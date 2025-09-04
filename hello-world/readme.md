@@ -1,4 +1,4 @@
-# Responds with the Hello World message 1
+# Responds with the Hello World message 2
 ## Use case
 When the service is invoked, it returns `Hello World` string. This sample can be used to respond with `Hello World` once service invoked.
 
