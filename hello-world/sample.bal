@@ -2,7 +2,7 @@ import ballerina/http;
 import ballerina/os;
 import ballerina/io;
 
-service / on new http:Listener(8090) {
+service /hello on new http:Listener(8090) {
 
     resource function get .() returns json|error {
         // Load configs from environment
