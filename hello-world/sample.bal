@@ -4,7 +4,7 @@ import ballerina/io;
 
 service /hello on new http:Listener(8090) {
 
-    resource function get .() returns json|error {
+    resource function get greeting() returns json|error {
         // Load configs from environment
         string serviceURL = os:getEnv("SVC_URL");
         string tokenURL = os:getEnv("TOKEN_URL");
