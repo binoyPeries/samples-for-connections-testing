@@ -1,0 +1,16 @@
+schemaVersion: "1.2"
+endpoints:
+    - name: ballerina-greeter-88e
+      displayName: Ballerina Greeter
+      service:
+        basePath: /hello
+        port: 8090
+      type: REST
+      networkVisibilities:
+        - Project
+        - Public
+      schemaFilePath: hello_openapi.yaml
+dependencies:
+    connectionReferences:
+    - name: testgl3
+      resourceRef: service:/connection-v2/graphql-service-v3/v1/aa997/PUBLIC
