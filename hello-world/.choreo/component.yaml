@@ -12,5 +12,5 @@ endpoints:
       schemaFilePath: hello_openapi.yaml
 dependencies:
     connectionReferences:
-    - name: testgl3
+    - name: customURLCon
       resourceRef: service:/connection-v2/graphql-service-v3/v1/aa997/PUBLIC
