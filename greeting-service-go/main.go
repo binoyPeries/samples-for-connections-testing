@@ -28,7 +28,6 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
-	"bytes"
         "io"
         "golang.org/x/oauth2/clientcredentials"
 	"encoding/json"
