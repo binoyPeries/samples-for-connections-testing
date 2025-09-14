@@ -12,5 +12,5 @@ endpoints:
     schemaFilePath: openapi.yaml
 dependencies:
     connectionReferences:
-    - name: testcondefault1
-      resourceRef: service:/my-project-v2/graphql-service-default/v1/aa997/PUBLIC
+    - name: testconcustom1
+      resourceRef: service:/my-project-v2/graphql-service-custom/v1/aa997/PUBLIC
