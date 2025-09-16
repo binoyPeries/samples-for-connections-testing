@@ -12,5 +12,5 @@ endpoints:
     schemaFilePath: openapi.yaml
 dependencies:
     connectionReferences:
-    - name: con-def-url
+    - name: gql-con-def
       resourceRef: service:/test-hansi/graphql-service-def/v1/aa997/PUBLIC
