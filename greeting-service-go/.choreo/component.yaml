@@ -12,5 +12,5 @@ endpoints:
     schemaFilePath: openapi.yaml
 dependencies:
     connectionReferences:
-    - name: testconcustom1
-      resourceRef: service:/my-project-v2/graphql-service-custom/v1/aa997/PUBLIC
+    - name: testproxydef
+      resourceRef: service:/hansi-project-test/graphql-service-url-def/v1/aa997/PUBLIC
