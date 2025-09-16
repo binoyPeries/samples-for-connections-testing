@@ -69,11 +69,11 @@ func main() {
 
 func greet(w http.ResponseWriter, r *http.Request) {
 	// Read environment variables
-	serviceURL := os.Getenv("CHOREO_CON_DEF_URL_SERVICEURL") // NOTE: no suffix; this is the GraphQL endpoint
-	tokenURL := os.Getenv("CHOREO_CON_DEF_URL_TOKENURL")
-	clientSecret := os.Getenv("CHOREO_CON_DEF_URL_CONSUMERSECRET")
-	clientID := os.Getenv("CHOREO_CON_DEF_URL_CONSUMERKEY")
-	apiKey := os.Getenv("CHOREO_CON_DEF_URL_CHOREOAPIKEY")
+	serviceURL := os.Getenv("CHOREO_GQL_CON_DEF_SERVICEURL") // NOTE: no suffix; this is the GraphQL endpoint
+	tokenURL := os.Getenv("CHOREO_GQL_CON_DEF_TOKENURL")
+	clientSecret := os.Getenv("CHOREO_GQL_CON_DEF_CONSUMERSECRET")
+	clientID := os.Getenv("CHOREO_GQL_CON_DEF_CONSUMERKEY")
+	apiKey := os.Getenv("CHOREO_GQL_CON_DEF_CHOREOAPIKEY")
 
 	fmt.Printf("Client ID: %s\n", clientID)
 	fmt.Printf("serviceURL: %s\n", serviceURL)
@@ -125,6 +125,7 @@ func greet(w http.ResponseWriter, r *http.Request) {
 	// Execute
 	resp, err := httpClient.Do(req)
 	if err != nil {
+        fmt.Printf("Eror while calling consumer")
 		http.Error(w, fmt.Sprintf("Error making GraphQL request: %v", err), http.StatusBadGateway)
 		return
 	}
