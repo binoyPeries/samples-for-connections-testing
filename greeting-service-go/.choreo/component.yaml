@@ -12,5 +12,5 @@ endpoints:
     schemaFilePath: openapi.yaml
 dependencies:
     connectionReferences:
-    - name: gql-con-4
+    - name: gql-con-5
       resourceRef: service:/connection-v2/graphql-service-def/v1/aa997/PUBLIC
