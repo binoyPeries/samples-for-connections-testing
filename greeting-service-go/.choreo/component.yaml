@@ -13,4 +13,4 @@ endpoints:
 dependencies:
     connectionReferences:
     - name: gql-con-4
-      resourceRef: service:/hansi-test/graphql-service/v1/aa997/PUBLIC
+      resourceRef: service:/connection-v2/graphql-service-def/v1/aa997/PUBLIC
