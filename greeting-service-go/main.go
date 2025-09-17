@@ -69,11 +69,11 @@ func main() {
 
 func greet(w http.ResponseWriter, r *http.Request) {
 	// Read environment variables
-	serviceURL := os.Getenv("CHOREO_GQL_CON_4_SERVICEURL") // NOTE: no suffix; this is the GraphQL endpoint
-	tokenURL := os.Getenv("CHOREO_GQL_CON_4_TOKENURL")
-	clientSecret := os.Getenv("CHOREO_GQL_CON_4_CONSUMERSECRET")
-	clientID := os.Getenv("CHOREO_GQL_CON_4_CONSUMERKEY")
-	apiKey := os.Getenv("CHOREO_GQL_CON_4_CHOREOAPIKEY")
+	serviceURL := os.Getenv("CHOREO_GQL_CON_5_SERVICEURL") // NOTE: no suffix; this is the GraphQL endpoint
+	tokenURL := os.Getenv("CHOREO_GQL_CON_5_TOKENURL")
+	clientSecret := os.Getenv("CHOREO_GQL_CON_5_CONSUMERSECRET")
+	clientID := os.Getenv("CHOREO_GQL_CON_5_CONSUMERKEY")
+	apiKey := os.Getenv("CHOREO_GQL_CON_5_CHOREOAPIKEY")
 
 	fmt.Printf("Client ID: %s\n", clientID)
 	fmt.Printf("serviceURL: %s\n", serviceURL)
